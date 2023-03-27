@@ -50,7 +50,6 @@ void BubbleSort::sort() {
 			if (m_atlas.at(j).getSize().y > m_atlas.at(j + 1).getSize().y)
 			{
 				m_atlas.at(j).setFillColor(IN_PROCESS_COLOR);
-				drawArray();
 				std::swap(m_atlas.at(j), m_atlas.at(j + 1));
 
 				m_atlas.at(j).move(sf::Vector2f(-COLUMN_WIDTH, 0.0f));
