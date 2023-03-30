@@ -14,7 +14,7 @@ BubbleSort::BubbleSort(int p_amount) {
 	}
 	m_window->clear();
 	drawArray();
-
+	m_window->setActive(false);
 	while (m_window->isOpen()) {
 		sf::Event event;
 		while (m_window->pollEvent(event)) {
@@ -24,7 +24,8 @@ BubbleSort::BubbleSort(int p_amount) {
 			}
 		}
 		if (!m_sorted) {
-			sort();
+			sf::Thread worker(std::bind(&BubbleSort::sort, this));
+			worker.launch();
 		}
 	}
 }
@@ -43,6 +44,8 @@ void BubbleSort::drawArray() {
 }
 
 void BubbleSort::sort() {
+	m_window->setActive(true);
+
 	for (int i = 0; i < m_amount - 1; i++)
 	{
 		for (int j = 0; j < m_amount - 1; j++)
@@ -59,6 +62,7 @@ void BubbleSort::sort() {
 			drawArray();
 		}
 	}
+	m_window->setActive(false);
 	m_sorted = true;
 }
 
