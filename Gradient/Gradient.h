@@ -10,9 +10,7 @@ public:
 private:
 
 	void update();
-	void getCursorPos();
-	bool isLeftMouseClicked(sf::Event& event);
-
+	void changeColor(std::size_t index);
 	const uint8_t m_shrinkFactor = 4;
 	const uint16_t m_windowDimension = 1000;
 	
