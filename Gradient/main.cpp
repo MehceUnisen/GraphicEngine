@@ -1,6 +1,6 @@
 #include "Gradient.h"
 
 int main() {
-	Gradient gradient(170);
+	Gradient gradient(100);
 	return 0;
 }

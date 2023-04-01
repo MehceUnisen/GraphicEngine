@@ -5,11 +5,10 @@ Gradient::Gradient(uint8_t step) :
 	m_gradientMap(sf::Quads, static_cast<std::size_t>(ceil(step / 80.0f)) * pow(m_windowDimension / m_shrinkFactor, 2) * 8),
 	m_vertexCount (static_cast<uint32_t>(sqrt(m_gradientMap.getVertexCount()) / 4))
 {
-	sf::ContextSettings settings;
-	settings.antialiasingLevel = 16.0f;
-	m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(m_windowDimension, m_windowDimension), "Gradient",sf::Style::Close, settings);
+	m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(m_windowDimension, m_windowDimension), "Gradient");
 	m_vertexDimension = static_cast<float>(m_windowDimension) / static_cast<float>(m_vertexCount);
-	sf::Thread worker(std::bind(&Gradient::update, this));
+	
+	update();
 	while (m_window->isOpen()) { 
 		sf::Event event;
 
@@ -17,13 +16,10 @@ Gradient::Gradient(uint8_t step) :
 			if (event.type == sf::Event::Closed)
 			{
 				m_window->close();
-				worker.terminate();
 			}
 			
 		}
 		m_window->setActive(false);
-		worker.launch();
-
 	}
 }
 
@@ -37,9 +33,8 @@ void Gradient::update() {
 			m_gradientMap[m_pixel + 1].position = sf::Vector2f(m_vertexDimension * m_column + m_vertexDimension, m_vertexDimension * i);
 			m_gradientMap[m_pixel + 2].position = sf::Vector2f(m_vertexDimension * m_column + m_vertexDimension, m_vertexDimension * i + m_vertexDimension);
 			m_gradientMap[m_pixel + 3].position = sf::Vector2f(m_vertexDimension * m_column, m_vertexDimension * i + m_vertexDimension);
-
-			changeColor(j);
-
+			
+			applyGradient(j, i);
 			m_pixel += 4;
 			m_column++;
 			
@@ -53,8 +48,35 @@ void Gradient::update() {
 }
 
 void Gradient::changeColor(std::size_t index) {
-	m_gradientMap[m_pixel].color = sf::Color(0.31f * index, 0.31f * index, 0);
-	m_gradientMap[m_pixel + 1].color = sf::Color(0.31f * index, 0.31f * index, 0);
-	m_gradientMap[m_pixel + 2].color = sf::Color(0.31f * index, 0.31f * index, 0);
-	m_gradientMap[m_pixel + 3].color = sf::Color(0.31f * index, 0.31f * index, 0);
+
+	m_gradientMap[m_pixel].color = sf::Color();
+	m_gradientMap[m_pixel + 1].color = sf::Color();
+	m_gradientMap[m_pixel + 2].color = sf::Color();
+	m_gradientMap[m_pixel + 3].color = sf::Color();
+}
+
+void Gradient::applyGradient(std::size_t verticalIndex, std::size_t horizontalIndex) {
+	if (m_hIndex < horizontalIndex)
+	{
+		m_hIndex++;
+		//we are on a new line
+		uint8_t green = m_vertexDimension * m_hIndex / 4;
+		m_gradientMap[m_pixel].color = sf::Color(green, 0, 0);
+		m_gradientMap[m_pixel + 1].color = sf::Color(green, 0, 0);
+		m_gradientMap[m_pixel + 2].color = sf::Color(green, 0, 0);
+		m_gradientMap[m_pixel + 3].color = sf::Color(green, 0, 0);
+	}
+	else {
+		
+		//we are on a new line
+		
+		uint8_t red = m_vertexDimension * verticalIndex / 4;
+		uint8_t green = m_vertexDimension * m_hIndex / 4;
+		uint8_t blue = m_vertexDimension * verticalIndex / 4;
+
+		m_gradientMap[m_pixel].color = sf::Color(green, red, blue);
+		m_gradientMap[m_pixel + 1].color = sf::Color(green, red, blue);
+		m_gradientMap[m_pixel + 2].color = sf::Color(green, red, blue);
+		m_gradientMap[m_pixel + 3].color = sf::Color(green, red, blue);
+	}
 }

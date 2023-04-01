@@ -11,6 +11,7 @@ private:
 
 	void update();
 	void changeColor(std::size_t index);
+	void applyGradient(std::size_t verticalIndex, std::size_t horizontalIndex);
 	const uint8_t m_shrinkFactor = 4;
 	const uint16_t m_windowDimension = 1000;
 	
@@ -21,4 +22,5 @@ private:
 	int m_pixel{ 0 };
 	float m_vertexDimension;
 	uint32_t m_vertexCount;
+	int m_hIndex { 0 };
 };
