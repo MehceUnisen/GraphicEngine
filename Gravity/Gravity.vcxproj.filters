@@ -21,10 +21,7 @@
     <ClCompile Include="Gravity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleHandler.cpp">
+    <ClCompile Include="ObjectHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +29,7 @@
     <ClInclude Include="Gravity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleHandler.h">
+    <ClInclude Include="ObjectHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

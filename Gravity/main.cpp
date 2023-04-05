@@ -1,19 +1,11 @@
-#include "ParticleHandler.h"
+#include "Gravity.h"
 #include <iostream>
+#include <thread>
 int main() {
-	ParticleHandler particleHandler;
+	sf::RenderWindow window(sf::VideoMode(800, 800), "Gravity");
+	Gravity gravity(window, 1000);
 	
-	particleHandler.appendParticle(Particle(sf::Vector2f(150.0f, 150.0f)));
-	particleHandler.appendParticle(Particle(sf::Vector2f(150.0f, 200.0f)));
-	particleHandler.appendParticle(Particle(sf::Vector2f(200.0f, 200.0f)));
-	particleHandler.appendParticle(Particle(sf::Vector2f(200.0f, 150.0f)));
-	
-	particleHandler.at(0).color = sf::Color::White;
-	particleHandler.at(1).color = sf::Color::White;
-	particleHandler.at(2).color = sf::Color::White;
-	particleHandler.at(3).color = sf::Color::White;
-
-	sf::RenderWindow window(sf::VideoMode(800, 800), "test");
+	sf::Clock clock;
 
 	while (window.isOpen())
 	{
@@ -23,11 +15,12 @@ int main() {
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+		sf::Time elapsed = clock.restart();
+		
 		window.clear();
-		window.draw(particleHandler.at(0));
-		window.draw(particleHandler.at(1));
-		window.draw(particleHandler.at(2));
-		window.draw(particleHandler.at(3));
+		gravity.update(400.0f, elapsed);
+		window.draw(gravity);
 		window.display();
+	
 	}
 }

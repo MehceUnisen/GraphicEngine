@@ -155,13 +155,11 @@
   <ItemGroup>
     <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleHandler.cpp" />
+    <ClCompile Include="ObjectHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gravity.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticleHandler.h" />
+    <ClInclude Include="ObjectHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
