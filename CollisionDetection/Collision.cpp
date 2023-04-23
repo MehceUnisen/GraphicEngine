@@ -22,7 +22,6 @@ Collision::Collision() :
 		m_window->clear();
 		takeInput();
 		renderVertices();
-		isColliding();
 		m_window->draw(m_vertices);
 		m_window->display();
 	}
@@ -86,15 +85,31 @@ void Collision::move(std::size_t index, sf::Vector2f coord) {
 	sf::Vector2f tempCoords = m_quadOrigin.at(index);
 	tempCoords.x += coord.x / 2;
 	tempCoords.y += coord.y / 2;
-	
+
+	int otherIndex = (index == 0) ? 1 : 0;
+	if (isColliding(index, otherIndex))
+	{
+		std::cout << "colliding\n";
+	}
 	if (isOutOfBounds(tempCoords)) {
 		m_quadOrigin.at(index).x += coord.x / 2;
 		m_quadOrigin.at(index).y += coord.y / 2;
 	}
+	
 }
 
 sf::Vector2f Collision::normal(sf::Vector2f coord) {
 	return sf::Vector2f(-coord.y, coord.x);
+}
+
+float Collision::getDistance(std::size_t index1, std::size_t index2) {
+	sf::Vector2f o1 = m_quadOrigin.at(index1);
+	sf::Vector2f o2 = m_quadOrigin.at(index2);
+	return sqrt(pow((o1.x - o2.x), 2) + pow((o1.y - o2.y), 2));
+}
+
+float Collision::getDistance(sf::Vector2f p1, sf::Vector2f p2) {
+	return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2));
 }
 
 std::array<sf::Vector2f, 4> Collision::getSeparatingAxes(std::size_t index) {
@@ -151,14 +166,14 @@ bool Collision::isOverlapping(std::array<float, 2> p1, std::array<float, 2> p2) 
 	return false;
 }
 
-bool Collision::isColliding() {
-	std::array<sf::Vector2f, 4> axes1 = getSeparatingAxes(0);
-	std::array<sf::Vector2f, 4> axes2 = getSeparatingAxes(1);
+bool Collision::isColliding(std::size_t index1, std::size_t index2) {
+	Axes axes1 = getSeparatingAxes(index1);
+	Axes axes2 = getSeparatingAxes(index2);
 	for (size_t i = 0; i < 4; i++)
 	{
-		sf::Vector2f axis = axes1[i];
-		std::array<float, 2> p1 = project(axis, 0);
-		std::array<float, 2> p2 = project(axis, 1);
+		Axis axis = axes1[i];
+		Projection p1 = project(axis, 0);
+		Projection p2 = project(axis, 1);
 
 		if (!isOverlapping(p1, p2))
 		{
@@ -167,15 +182,14 @@ bool Collision::isColliding() {
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
-		sf::Vector2f axis = axes2[i];
-		std::array<float, 2> p1 = project(axis, 0);
-		std::array<float, 2> p2 = project(axis, 1);
+		Axis axis = axes2[i];
+		Projection p1 = project(axis, 0);
+		Projection p2 = project(axis, 1);
 
 		if (!isOverlapping(p1, p2))
 		{
 			return false;
 		}
 	}
-	std::cout << "COLLIDING\n";
 	return true;
 }

@@ -3,6 +3,11 @@
 #include <array>
 #include <iostream>
 #include <math.h>
+#include <utility>
+
+typedef std::array<float, 2> Projection;
+typedef std::array<sf::Vector2f, 4> Axes;
+typedef sf::Vector2f Axis;
 
 class Collision {
 
@@ -20,13 +25,15 @@ private:
 	bool isOutOfBounds(sf::Vector2f coord);
 
 	sf::Vector2f normal(sf::Vector2f coord);
+	float getDistance(std::size_t index1, std::size_t index2);
+	float getDistance(sf::Vector2f p1, sf::Vector2f p2);
 	std::array<sf::Vector2f, 4> getSeparatingAxes(std::size_t index);
 	
 	float dotProduct(sf::Vector2f p1, sf::Vector2f p2);
 	std::array<float,2> project(sf::Vector2f axis, std::size_t index);
 	
 	bool isOverlapping(std::array<float, 2> p1, std::array<float, 2> p2);
-	bool isColliding();
+	bool isColliding(std::size_t index1, std::size_t index2);
 
 	std::shared_ptr<sf::RenderWindow> m_window;
 	std::vector <std::shared_ptr<std::thread>> m_threadPool;
