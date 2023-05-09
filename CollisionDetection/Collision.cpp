@@ -9,7 +9,7 @@ Collision::Collision() :
 	m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 800), "Collision");
 	
 	m_quadOrigin.at(0) = sf::Vector2f(400.0f, 400.0f);
-	m_quadOrigin.at(1) = sf::Vector2f(225.0f, 75.0f);
+	m_quadOrigin.at(1) = sf::Vector2f(300.0f, 400.0f);
 	
 	while (m_window->isOpen()) {
 		sf::Event event;
